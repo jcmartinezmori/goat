@@ -23,7 +23,7 @@ def main(association, max_rank, no_samples=100000):
         pickle.dump(player_idx_to_id, file)
     with open('./results/player_idx_to_name_{0}_{1}.pkl'.format(association, max_rank), 'wb') as file:
         pickle.dump(player_idx_to_name, file)
-    out.to_pickle('./results/out_{0}-{1}.pkl'.format(association, max_rank))
+    out.to_csv('./results/out_{0}-{1}.csv'.format(association, max_rank), index=False)
 
 
 if __name__ == '__main__':
@@ -33,4 +33,4 @@ if __name__ == '__main__':
     max_rank_l = [3, 5, 10, 20]
 
     jobs = [(association, max_rank, samples) for association, max_rank in it.product(association_l, max_rank_l)]
-    jb.Parallel(n_jobs=-1, verbose=11)(jb.delayed(main)(*job) for job in jobs)
+    jb.Parallel(n_jobs=8, verbose=11)(jb.delayed(main)(*job) for job in jobs)

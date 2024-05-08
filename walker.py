@@ -5,6 +5,14 @@ np.random.seed(0)
 def main(w_mat, no_samples=100000, mod=1):
 
     w_mat += np.ones(w_mat.shape)
+    # for i in range(w_mat.shape[0]):
+    #     for j in range(w_mat.shape[0]):
+    #         if i != j:
+    #             tot = w_mat[i, j] + w_mat[j, i]
+    #             w_mat[i, j] /= tot
+    #             w_mat[j, i] /= tot
+
+
 
     trans = np.array([(i, j) for i in range(w_mat.shape[0]) for j in range(i, w_mat.shape[0])])
     pis = []
@@ -16,7 +24,7 @@ def main(w_mat, no_samples=100000, mod=1):
         if t % mod == 0:
             ct += 1
             pis.append(pi.copy())
-            # print('{0:.2f}%'.format(ct / no_samples * 100))
+            print('{0:.2f}%'.format(ct / no_samples * 100))
         pi = walk(trans, pi, w_mat)
     return pis
 

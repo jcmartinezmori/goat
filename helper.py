@@ -29,7 +29,6 @@ def load(association, max_rank):
 
     rankings_df = pd.concat([pd.read_csv(file, usecols=['ranking_date', 'rank', 'player']) for file in files])
     rankings_df = rankings_df.rename(columns={'player': 'player_id'})
-    rankings_df = rankings_df[rankings_df['rank'] <= max_rank]
 
     players_file = './tennis_{0}/{1}_players.csv'.format(association, association)
     players_df = pd.read_csv(players_file, usecols=['player_id', 'name_first', 'name_last'])
@@ -37,6 +36,8 @@ def load(association, max_rank):
     players_df = players_df.drop(columns=['name_first', 'name_last'])
 
     df = pd.merge(rankings_df, players_df, on='player_id')
+
+    df = df[df['rank'] <= max_rank]
 
     players_df = players_df.set_index('player_id')
     df['player_idx'], player_idx_to_id = pd.factorize(df['player_id'])
@@ -49,13 +50,16 @@ def load(association, max_rank):
         ranking[grouped_df['player_idx']] = grouped_df['rank']
         rankings.append(ranking)
 
-    supp = np.array([[i for i in range(n) if ranking[i] is not None] for ranking in rankings], dtype=list)
+    ranking_supp = np.array([[i for i in range(n) if ranking[i] is not None] for ranking in rankings], dtype=list)
+    player_supp = np.array([sum(1 for ranking in rankings if ranking[i] is not None) for i in range(n)], dtype=int)
 
     w_mat = np.zeros((n, n))
     for k, ranking in enumerate(rankings):
-        for i, j in it.permutations(supp[k], r=2):
+        for i, j in it.permutations(ranking_supp[k], r=2):
             if ranking[i] < ranking[j]:
-                w_mat[i, j] += 1
+                # w_mat[i, j] += 1
+                w_mat[i, j] += 1 * player_supp[i] / player_supp[j]
+
 
     return w_mat, player_idx_to_id, player_idx_to_name
 

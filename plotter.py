@@ -29,8 +29,9 @@ with open('./results/player_idx_to_id_{0}_{1}.pkl'.format(association, max_rank)
 with open('./results/player_idx_to_name_{0}_{1}.pkl'.format(association, max_rank), 'rb') as file:
     player_idx_to_name = pickle.load(file)
 n = len(player_idx_to_id)
-out = pd.read_pickle('./results/out_{0}-{1}.pkl'.format(association, max_rank))
-out = out.iloc[10000:1000000]
+out = pd.read_csv('./results/out_{0}-{1}.csv'.format(association, max_rank))
+# out = pd.read_pickle('./results/out_{0}-{1}.pkl'.format(association, max_rank))
+# out = out.iloc[100000:]
 # out = out.iloc[0::10]
 # out = out.iloc[0::2]
 # out = out.iloc[1::2]
