@@ -20,8 +20,8 @@ colors = {
     'reddishpurple': '#cc79a7'
 }
 
-association = 'wta'
-max_rank = 10
+association = 'atp'
+max_rank = 5
 max_generation = 6
 
 with open('./results/player_idx_to_id_{0}_{1}.pkl'.format(association, max_rank), 'rb') as file:
@@ -31,7 +31,7 @@ with open('./results/player_idx_to_name_{0}_{1}.pkl'.format(association, max_ran
 n = len(player_idx_to_id)
 out = pd.read_csv('./results/out_{0}-{1}.csv'.format(association, max_rank))
 # out = pd.read_pickle('./results/out_{0}-{1}.pkl'.format(association, max_rank))
-# out = out.iloc[100000:]
+out = out.iloc[10000:]
 # out = out.iloc[0::10]
 # out = out.iloc[0::2]
 # out = out.iloc[1::2]
@@ -116,7 +116,7 @@ edge_trace = go.Scatter(
     x=x,
     y=y,
     mode='lines',
-    opacity=1,
+    opacity=0.75,
     line=dict(
         color=colors['black'],
         width=0.5
@@ -135,7 +135,10 @@ fig = go.Figure(
     )
 )
 fig.write_html('./html/three-poset_{0}-{1}.html'.format(association, max_rank))
-fig.write_image('./pdf/poset_{0}-{1}.pdf'.format(association, max_rank), width=1200, height=800, scale=1)
+fig.write_image(
+    './pdf/poset_{0}-{1}.pdf'.format(association, max_rank),
+    width=1200, height=800, scale=1
+)
 
-fig.show()
+# fig.show()
 
