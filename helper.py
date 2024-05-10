@@ -51,12 +51,12 @@ def load(association, max_rank):
         rankings.append(ranking)
 
     ranking_supp = np.array([[i for i in range(n) if ranking[i] is not None] for ranking in rankings], dtype=list)
-    player_supp_card = np.array([sum(1 for ranking in rankings if ranking[i] is not None) for i in range(n)], dtype=int)
+    player_supp_sz = np.array([sum(1 for ranking in rankings if ranking[i] is not None) for i in range(n)], dtype=int)
 
     w_mat = np.zeros((n, n))
     for k, ranking in enumerate(rankings):
         for i, j in it.permutations(ranking_supp[k], r=2):
             if ranking[i] < ranking[j]:
-                w_mat[i, j] += player_supp_card[i] / player_supp_card[j]
+                w_mat[i, j] += player_supp_sz[i] / player_supp_sz[j]
 
     return w_mat, player_idx_to_id, player_idx_to_name
