@@ -6,9 +6,9 @@ import pickle
 import walker as wk
 
 
-def main(association, max_rank, no_samples=100000, version='v2'):
+def main(association, max_rank, no_samples=100000, version=''):
 
-    w_mat, player_idx_to_id, player_idx_to_name = hp.loadv2(association, max_rank)
+    w_mat, player_idx_to_id, player_idx_to_name = hp.load(association, max_rank)
 
     mod = w_mat.shape[0] if w_mat.shape[0] % 2 else w_mat.shape[0] + 1
     pis = wk.main(w_mat, no_samples=no_samples, mod=mod)
@@ -28,7 +28,7 @@ def main(association, max_rank, no_samples=100000, version='v2'):
 
 if __name__ == '__main__':
 
-    ver = 2
+    ver = ''
     sam = 100000
     association_l = ['atp', 'wta']
     max_rank_l = [3, 5, 10, 20]

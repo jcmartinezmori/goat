@@ -20,16 +20,17 @@ colors = {
     'reddishpurple': '#cc79a7'
 }
 
+version = ''
 association = 'atp'
 max_rank = 5
 max_generation = 6
 
-with open('./results/player_idx_to_id_{0}_{1}.pkl'.format(association, max_rank), 'rb') as file:
+with open('./results/{0_player_idx_to_id_{1}-{2}.pkl'.format(version, association, max_rank), 'rb') as file:
     player_idx_to_id = pickle.load(file)
-with open('./results/player_idx_to_name_{0}_{1}.pkl'.format(association, max_rank), 'rb') as file:
+with open('./results/{0}_player_idx_to_name_{1}-{2}.pkl'.format(version, association, max_rank), 'rb') as file:
     player_idx_to_name = pickle.load(file)
 n = len(player_idx_to_id)
-out = pd.read_csv('./results/out_{0}-{1}.csv'.format(association, max_rank))
+out = pd.read_csv('./results/{0}_out_{1}-{2}.csv'.format(version, association, max_rank))
 # out = pd.read_pickle('./results/out_{0}-{1}.pkl'.format(association, max_rank))
 out = out.iloc[10000:]
 # out = out.iloc[0::10]
