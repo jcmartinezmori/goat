@@ -40,7 +40,7 @@ def main(version, association, cutoff, plot_cutoff):
         if plot_cutoff == g.number_of_nodes():
             data['label'] = ''
         else:
-            data['label'] = data['name']
+            data['label'] = data['player_name']
     pos = nx.multipartite_layout(g, align='vertical', subset_key='plot_dist', scale=1)
 
     node_x, node_y = zip(*[pos[i] for i in g.nodes()])
@@ -51,8 +51,8 @@ def main(version, association, cutoff, plot_cutoff):
         text=[data['label'] for _, data in g.nodes(data=True)],
         textposition='top center',
         textfont=dict(
-            family="sans serif",
-            size=16,
+            # family="sans serif",
+            size=12,
             color=colors['black']
         ),
         marker=dict(
@@ -102,7 +102,7 @@ if __name__ == '__main__':
     ver = ''
     association_l = ['atp', 'wta']
     cutoff_l = [3, 5, 10, 20]
-    plot_cutoff_l = [6]
+    plot_cutoff_l = [6, None]
 
     for assc in association_l:
         for ctff in cutoff_l:

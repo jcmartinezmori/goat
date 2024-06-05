@@ -32,8 +32,8 @@ def main(version, association, cutoff):
     for dist, nodes in enumerate(nx.topological_generations(g)):
         for i in nodes:
             g.nodes[i]['dist'] = dist
-            g.nodes[i]['name'] = player_idx_to_name[i]
-            g.nodes[i]['id'] = player_idx_to_id[i]
+            g.nodes[i]['player_name'] = player_idx_to_name[i]
+            g.nodes[i]['player_id'] = player_idx_to_id[i]
 
     with open('./posets/{0}_out_{1}-{2}.pkl'.format(version, association, cutoff), 'wb') as file:
         pickle.dump(g, file)
