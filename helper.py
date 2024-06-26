@@ -10,7 +10,7 @@ usecols = [
 ]
 
 
-def load(association, max_rank):
+def load(association, cutoff):
 
     if association == 'atp':
         decades = [
@@ -37,21 +37,25 @@ def load(association, max_rank):
 
     df = pd.merge(rankings_df, players_df, on='player_id')
 
-    df = df[df['rank'] <= max_rank]
+    df = df[df['rank'] <= cutoff]
 
     players_df = players_df.set_index('player_id')
     df['player_idx'], player_idx_to_id = pd.factorize(df['player_id'])
-    player_idx_to_name = [players_df.loc[player_id]['name'] for player_id in player_idx_to_id]
-    n = len(player_idx_to_id)
+    player_idx_to_name = [players_df.loc[i]['name'] for i in player_idx_to_id]
 
+    n = len(player_idx_to_id)
     rankings = []
     for _, grouped_df in df.groupby('ranking_date'):
         ranking = np.full(n, None)
         ranking[grouped_df['player_idx']] = grouped_df['rank']
         rankings.append(ranking)
 
-    ranking_supp = np.array([[i for i in range(n) if ranking[i] is not None] for ranking in rankings], dtype=list)
-    player_supp_sz = np.array([sum(1 for ranking in rankings if ranking[i] is not None) for i in range(n)], dtype=int)
+    ranking_supp = np.array([
+        [idx for idx in range(n) if ranking[idx] is not None] for ranking in rankings], dtype=list
+    )
+    player_supp_sz = np.array(
+        [sum(1 for ranking in rankings if ranking[idx] is not None) for idx in range(n)], dtype=int
+    )
 
     w_mat = np.zeros((n, n))
     for k, ranking in enumerate(rankings):

@@ -6,12 +6,11 @@ import pickle
 import walker as wk
 
 
-def main(association, max_rank, no_samples=100000, version=''):
+def main(version, association, cutoff, no_samples=100000):
 
-    w_mat, player_idx_to_id, player_idx_to_name = hp.load(association, max_rank)
+    w_mat, player_idx_to_id, player_idx_to_name = hp.load(association, cutoff)
 
-    mod = w_mat.shape[0] if w_mat.shape[0] % 2 else w_mat.shape[0] + 1
-    pis = wk.main(w_mat, no_samples=no_samples, mod=mod)
+    pis = wk.main(w_mat, version, no_samples)
 
     out = pd.DataFrame(pis, columns=player_idx_to_name)
     out += 1
@@ -19,19 +18,19 @@ def main(association, max_rank, no_samples=100000, version=''):
     med = med.sort_values()
     out = out[med.index]
 
-    with open('./results/{0}_player_idx_to_id_{1}-{2}.pkl'.format(version, association, max_rank), 'wb') as file:
+    with open('./results/{0}_player_idx_to_id_{1}-{2}.pkl'.format(version, association, cutoff), 'wb') as file:
         pickle.dump(player_idx_to_id, file)
-    with open('./results/{0}_player_idx_to_name_{1}-{2}.pkl'.format(version, association, max_rank), 'wb') as file:
+    with open('./results/{0}_player_idx_to_name_{1}-{2}.pkl'.format(version, association, cutoff), 'wb') as file:
         pickle.dump(player_idx_to_name, file)
-    out.to_csv('./results/{0}_out_{1}-{2}.csv'.format(version, association, max_rank), index=False)
+    out.to_csv('./results/{0}_out_{1}-{2}.csv'.format(version, association, cutoff), index=False)
 
 
 if __name__ == '__main__':
 
-    ver = ''
-    sam = 100000
-    association_l = ['atp', 'wta']
-    max_rank_l = [3, 5, 10, 20]
+    ver_l = ['adj', 'nonadj']
+    no_sam = 100000
+    assc_l = ['atp', 'wta']
+    ctff_l = [3, 5, 10, 20]
 
-    jobs = [(association, max_rank, sam) for association, max_rank in it.product(association_l, max_rank_l)]
+    jobs = [(ver, assc, ctff, no_sam) for ver, assc, ctff in it.product(ver_l, assc_l, ctff_l)]
     jb.Parallel(n_jobs=8, verbose=11)(jb.delayed(main)(*job) for job in jobs)
