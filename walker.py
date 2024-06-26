@@ -7,10 +7,10 @@ def main(w_mat, version, no_samples):
     w_mat += np.ones(w_mat.shape)
 
     if version == 'nonadj':
-        mod = w_mat.shape[0] - 1
-        trans = np.array([(i, j) for i in range(w_mat.shape[0] - 1) for j in range(i + 1, w_mat.shape[0] - 1)])
+        mod = int(2 * (w_mat.shape[0] - 1))
+        trans = np.array([(i, j) for i in range(w_mat.shape[0]) for j in range(i + 1, w_mat.shape[0])])
     elif version == 'adj':
-        mod = int(w_mat.shape[0] * (w_mat.shape[0] - 1) / 2)
+        mod = int(2 * w_mat.shape[0] * (w_mat.shape[0] - 1) / 2)
         trans = np.array([(i, i + 1) for i in range(w_mat.shape[0] - 1)])
     else:
         raise Exception('Version {0} not supported!'.format(version))
