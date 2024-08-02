@@ -1,11 +1,7 @@
-import itertools as it
 import networkx as nx
-import numpy as np
-import pandas as pd
 import pickle
 import plotly.graph_objects as go
 import plotly.io as pio
-import plotly.express as px
 pio.renderers.default = "browser"
 
 
@@ -24,7 +20,7 @@ colors = {
 
 def main(version, association, cutoff, plot_cutoff):
 
-    with open('./posets/{0}_out_{1}-{2}.pkl'.format(version, association, cutoff), 'rb') as file:
+    with open('./poset/poset_{0}-{1}-{2}.pkl'.format(version, association, cutoff), 'rb') as file:
         g = pickle.load(file)
     if plot_cutoff is None:
         plot_cutoff = g.number_of_nodes()
@@ -56,7 +52,8 @@ def main(version, association, cutoff, plot_cutoff):
             color=colors['black']
         ),
         marker=dict(
-            color=colors['skyblue'],
+            color=colors['orange'] if association == 'atp' else colors['blue'],
+            symbol='circle' if association == 'atp' else 'square',
             size=10,
             line=dict(
                 color=colors['black'],
@@ -92,19 +89,20 @@ def main(version, association, cutoff, plot_cutoff):
     )
 
     fig.write_image(
-        './pdf/hasse_{0}-{1}-{2}.pdf'.format(association, cutoff, plot_cutoff),
+        './hasse/hasse_{0}-{1}-{2}-{3}.pdf'.format(version, association, cutoff, plot_cutoff),
         width=1200, height=325, scale=1
     )
 
 
 if __name__ == '__main__':
 
-    ver = ''
-    association_l = ['atp', 'wta']
-    cutoff_l = [3, 5, 10, 20]
-    plot_cutoff_l = [6, None]
+    ver_l = ['nonadj']
+    assc_l = ['wta', 'atp']
+    ctff_l = [3, 5, 10, 20]
+    plt_ctff_l = [5, None]
 
-    for assc in association_l:
-        for ctff in cutoff_l:
-            for plt_ctff in plot_cutoff_l:
-                main(ver, assc, ctff, plt_ctff)
+    for ver in ver_l:
+        for assc in assc_l:
+            for ctff in ctff_l:
+                for plt_ctff in plt_ctff_l:
+                    main(ver, assc, ctff, plt_ctff)

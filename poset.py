@@ -20,8 +20,10 @@ def main(version, association, cutoff):
     for i in range(n):
         name = player_idx_to_name[i]
         for r in out[name] - 1:
-            mu[i][r] += 1
+            # mu[i][r] += 1
+            mu[r, i] += 1
     mu = mu / mu.sum(axis=1)
+    # mu = mu / mu.sum(axis=1)
 
     g = nx.DiGraph()
     g.add_nodes_from(range(n))
@@ -35,17 +37,18 @@ def main(version, association, cutoff):
             g.nodes[i]['player_name'] = player_idx_to_name[i]
             g.nodes[i]['player_id'] = player_idx_to_id[i]
 
-    with open('./posets/{0}_out_{1}-{2}.pkl'.format(version, association, cutoff), 'wb') as file:
+    with open('./poset/poset_{0}-{1}-{2}.pkl'.format(version, association, cutoff), 'wb') as file:
         pickle.dump(g, file)
 
 
 if __name__ == '__main__':
 
-    ver = ''
-    association_l = ['atp', 'wta']
-    cutoff_l = [3, 5, 10, 20]
+    ver_l = ['adj', 'nonadj']
+    assc_l = ['wta', 'atp']
+    ctff_l = [20]
 
-    for assc in association_l:
-        for ctff in cutoff_l:
-            main(ver, assc, ctff)
+    for ver in ver_l:
+        for assc in assc_l:
+            for ctff in ctff_l:
+                main(ver, assc, ctff)
 
