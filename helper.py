@@ -57,6 +57,7 @@ def load(association, cutoff):
         [sum(1 for ranking in rankings if ranking[idx] is not None) for idx in range(n)], dtype=int
     )
 
+    # plus one is added later in code
     w_mat = np.zeros((n, n))
     for k, ranking in enumerate(rankings):
         for i, j in it.permutations(ranking_supp[k], r=2):
