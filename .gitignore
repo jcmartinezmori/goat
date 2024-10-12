@@ -1,0 +1,5 @@
+.DS_Store
+.idea/
+__pycache__/
+./results/adj_out_atp-20.csv
+./results/nonadj_out_atp-20.csv
