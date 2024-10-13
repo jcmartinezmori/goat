@@ -1,11 +1,9 @@
 import sage.all as sage
 import pandas as pd
 import pickle
-import numpy as np
 import plotly.graph_objects as go
 import plotly.io as pio
 pio.renderers.default = "browser"
-import plotly.express as px
 
 
 colors = {
@@ -67,14 +65,14 @@ def main(version, association, cutoff, plot_cutoff, no_samples, load):
     ))
     fig.update_layout(
         xaxis_title='',
-        yaxis_title='Average Rank (from Linear Extensions)',
+        yaxis_title='Average Rank',
         yaxis_range=[0, plot_cutoff + 2],
         margin=dict(b=10, l=10, r=10, t=10),
     )
 
     fig.write_image(
         './avg_rank/avg_rank_{0}-{1}-{2}-{3}.pdf'.format(version, association, cutoff, plot_cutoff),
-        width=1200, height=480, scale=1
+        width=1200, height=325, scale=1
     )
 
 
@@ -85,7 +83,7 @@ if __name__ == '__main__':
     ctff_l = [3, 5, 10, 20]
     plt_ctff_l = [20]
     no_sam = 100000
-    ld = True
+    ld = False
 
     for ver in ver_l:
         for assc in assc_l:
