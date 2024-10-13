@@ -10,4 +10,4 @@ The post-processing files are:
   - extension.py, which uses the output of poset.py to prepare linear extensions and a figure of average ranks; and
   - scatter.py, which uses the output of extension.py to prepare a matrix of scatter plots of average ranks at different cutoffs.
 
-This code requires SageMath. The directories contain all figures and (almost) all outputs, with the exception of those the ATP at cutoff 20 (which can be reproduced using the source code, but was too heavy to make available here directly).
+This code requires the installation of SageMath. The directories contain all figures and (almost) all outputs, with the exception of those for the ATP at cutoff 20 (which can be reproduced using this source code, but were too heavy to make available here directly).
