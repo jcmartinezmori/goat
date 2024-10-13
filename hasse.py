@@ -47,7 +47,6 @@ def main(version, association, cutoff, plot_cutoff):
         text=[data['label'] for _, data in g.nodes(data=True)],
         textposition='top center',
         textfont=dict(
-            # family="sans serif",
             size=12,
             color=colors['black']
         ),
@@ -72,7 +71,7 @@ def main(version, association, cutoff, plot_cutoff):
         line=dict(
             color=colors['black'],
             width=0.25
-        )
+        ),
     )
 
     fig = go.Figure(
@@ -97,7 +96,7 @@ def main(version, association, cutoff, plot_cutoff):
 if __name__ == '__main__':
 
     ver_l = ['nonadj']
-    assc_l = ['wta', 'atp']
+    assc_l = ['atp', 'wta']
     ctff_l = [3, 5, 10, 20]
     plt_ctff_l = [5, None]
 

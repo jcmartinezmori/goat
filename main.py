@@ -11,12 +11,8 @@ def main(version, association, cutoff, no_samples=100000):
     w_mat, player_idx_to_id, player_idx_to_name = hp.load(association, cutoff)
 
     pis = wk.main(w_mat, version, no_samples)
-
-    out = pd.DataFrame(pis, columns=player_idx_to_name)
+    out = pd.DataFrame(pis)
     out += 1
-    med = out.median()
-    med = med.sort_values()
-    out = out[med.index]
 
     with open('./results/{0}_player_idx_to_id_{1}-{2}.pkl'.format(version, association, cutoff), 'wb') as file:
         pickle.dump(player_idx_to_id, file)
@@ -28,9 +24,9 @@ def main(version, association, cutoff, no_samples=100000):
 if __name__ == '__main__':
 
     ver_l = ['nonadj']
-    no_sam = 110000
+    no_sam = 100000
     assc_l = ['atp', 'wta']
-    ctff_l = [3, 5, 10]
+    ctff_l = [3, 5, 10, 20]
 
     jobs = [(ver, assc, ctff, no_sam) for ver, assc, ctff in it.product(ver_l, assc_l, ctff_l)]
     jb.Parallel(n_jobs=16, verbose=11)(jb.delayed(main)(*job) for job in jobs)
