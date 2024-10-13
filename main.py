@@ -27,8 +27,8 @@ def main(version, association, cutoff, no_samples=100000):
 
 if __name__ == '__main__':
 
-    ver_l = ['adj', 'nonadj']
-    no_sam = 100000
+    ver_l = ['nonadj']
+    no_sam = 110000
     assc_l = ['atp', 'wta']
     ctff_l = [3, 5, 10, 20]
 
