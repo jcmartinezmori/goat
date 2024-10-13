@@ -34,8 +34,6 @@ def main(version, association, cutoff_l, plot_cutoff):
             df = pd.merge(df, r_df, on=['player_id', 'player_name'], how='outer')
     df = df.dropna()
 
-    print(df.shape)
-
     column_l = ['avg_rank_{0}'.format(cutoff) for cutoff in cutoff_l]
 
     n = len(column_l)
@@ -105,79 +103,9 @@ if __name__ == '__main__':
     ver_l = ['nonadj']
     assc_l = ['wta', 'atp']
     ctff_l = [3, 5, 10, 20]
-    plt_ctff_l = [25]
+    plt_ctff_l = [50]
 
     for ver in ver_l:
         for assc in assc_l:
             for plt_ctff in plt_ctff_l:
                 main(ver, assc, ctff_l, plt_ctff)
-
-
-# cutoff = 5
-#
-# if association == 'atp':
-#     decades = [
-#         '70', '80', '90', '00', '10', '20'
-#     ]
-# elif association == 'wta':
-#     decades = [
-#         '80', '90', '00', '10', '20'
-#     ]
-# else:
-#     raise Exception('Association {0} not supported!'.format(association))
-#
-# years = []
-# for decade in decades:
-#     for y in range(10):
-#         if decade in {'00', '10', '20'}:
-#             year = str(int('20' + decade) + y)
-#         else:
-#             year = str(int('19' + decade) + y)
-#         if int(year) > 2023:
-#             continue
-#         years.append(year)
-#
-# files = [
-#     './tennis_{0}/{1}_matches_{2}.csv'.format(association, association, year) for year in years
-# ]
-#
-# matches_df = pd.concat([pd.read_csv(file, usecols=['tourney_level', 'winner_id', 'loser_id', 'round']) for file in files])
-# matches_df = matches_df[matches_df['round'].isin(['F']) & matches_df['tourney_level'].isin(['G'])]
-#
-# # matches_df = pd.DataFrame({
-# #     'player_id': pd.concat([matches_df['winner_id'], matches_df['loser_id']]).reset_index(drop=True)
-# # })
-#
-# matches_df['player_id'] = matches_df['winner_id']
-#
-#
-# players_file = './tennis_{0}/{1}_players.csv'.format(association, association)
-# players_df = pd.read_csv(players_file, usecols=['player_id', 'name_first', 'name_last'])
-# players_df['name'] = players_df['name_first'] + ' ' + players_df['name_last']
-# players_df = players_df.drop(columns=['name_first', 'name_last'])
-#
-# df = pd.merge(matches_df, players_df, on='player_id')
-#
-# with open('./results/{0}_player_idx_to_id_{1}-{2}.pkl'.format('', association, cutoff), 'rb') as file:
-#     player_idx_to_id = pickle.load(file)
-# with open('./results/{0}_player_idx_to_name_{1}-{2}.pkl'.format('', association, cutoff), 'rb') as file:
-#     player_idx_to_name = pickle.load(file)
-# with open('./posets/{0}_out_{1}-{2}.pkl'.format('', association, cutoff), 'rb') as file:
-#     g = pickle.load(file)
-# dist = dict()
-# for generation, nodes in enumerate(nx.topological_generations(g)):
-#     for i in nodes:
-#         dist[player_idx_to_name[i]] = generation
-#
-# df = df['name'].value_counts()
-# df = df.reset_index()
-# df.columns = ['name', 'count']
-#
-#
-# dist_df = pd.DataFrame(dist.items(), columns=['name', 'dist'])
-#
-# df = pd.merge(df, dist_df, on='name')
-#
-#
-# fig = px.scatter(df, x='dist', y='count', hover_data=['name'])
-# fig.show()
