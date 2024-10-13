@@ -1,4 +1,4 @@
-This repostiroy contains the source code for manuscript "Who's the GOAT? Sports Rankings and Data-driven Random Walks on the Symmetric Group," by Gian-Gabriel P. Garcia and J. Carlos Martínez Mori, arXiv 2409.12107, 2024.
+This repository contains the source code for manuscript "Who's the GOAT? Sports Rankings and Data-driven Random Walks on the Symmetric Group," by Gian-Gabriel P. Garcia and J. Carlos Martínez Mori, arXiv 2409.12107, 2024.
 
 The main execution file is main.py, which invokes:
   - helper.py, which pre-processes publicly available data compiled by GitHub user JeffSackmann; and
