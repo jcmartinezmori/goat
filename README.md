@@ -9,3 +9,5 @@ The post-processing files are:
   - hasse.py, which uses the output of poset.py to prepare a Hasse diagram
   - extension.py, which uses the output of poset.py to prepare linear extensions and a figure of average ranks
   - scatter.py, which uses the output of extension.py to prepare a matrix of scatter plots of average ranks
+
+The directories contain all figures and almost all samples from the random walks with the exception of the ATP at cutoff 20 (which can be reproduced using this code, but was too heavy to directly make available here).
