@@ -68,10 +68,11 @@ def main(version, association, cutoff, plot_cutoff, no_samples, load):
         yaxis_title='Average Rank',
         yaxis_range=[0, plot_cutoff + 2],
         margin=dict(b=10, l=10, r=10, t=10),
+        xaxis=dict(autorange='reversed')
     )
 
     fig.write_image(
-        './avg_rank/avg_rank_{0}-{1}-{2}-{3}.pdf'.format(version, association, cutoff, plot_cutoff),
+        './extension/extension_{0}-{1}-{2}-{3}.pdf'.format(version, association, cutoff, plot_cutoff),
         width=1200, height=325, scale=1
     )
 
@@ -80,9 +81,9 @@ if __name__ == '__main__':
 
     ver_l = ['nonadj']
     assc_l = ['wta', 'atp']
-    ctff_l = [3, 5, 10, 20]
+    ctff_l = [3, 5]
     plt_ctff_l = [20]
-    no_sam = 100000
+    no_sam = 1000000
     ld = False
 
     for ver in ver_l:

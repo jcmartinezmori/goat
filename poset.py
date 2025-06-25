@@ -14,13 +14,13 @@ def main(version, association, cutoff):
     out = pd.read_csv('./results/{0}_out_{1}-{2}.csv'.format(version, association, cutoff))
     out.columns = out.columns.astype(int)
 
-    n = len(player_idx_to_id)
+    n = out.shape[1]
 
-    mu = np.zeros((n, n))
-    for r in range(n):
-        for i in out[r] - 1:
-            mu[i, r] += 1
-    mu = mu / mu.sum(axis=1)
+    arr = out.to_numpy() - 1
+    rows = arr.flatten()
+    cols = np.tile(np.arange(n), len(arr))
+    mu = np.zeros((n, n), dtype=int)
+    np.add.at(mu, (rows, cols), 1)
 
     g = nx.DiGraph()
     g.add_nodes_from(range(n))
@@ -41,8 +41,8 @@ def main(version, association, cutoff):
 if __name__ == '__main__':
 
     ver_l = ['nonadj']
-    assc_l = ['wta', 'atp']
-    ctff_l = [3, 5, 10, 20]
+    assc_l = ['atp', 'wta']
+    ctff_l = [3, 5]
 
     for ver in ver_l:
         for assc in assc_l:

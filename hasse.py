@@ -95,9 +95,14 @@ def main(version, association, cutoff, plot_cutoff):
 
 if __name__ == '__main__':
 
+    # ver_l = ['nonadj']
+    # assc_l = ['atp', 'wta']
+    # ctff_l = [3, 5, 10, 20]
+    # plt_ctff_l = [5, None]
+
     ver_l = ['nonadj']
     assc_l = ['atp', 'wta']
-    ctff_l = [3, 5, 10, 20]
+    ctff_l = [3, 5]
     plt_ctff_l = [5, None]
 
     for ver in ver_l:

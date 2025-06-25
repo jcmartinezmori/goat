@@ -21,7 +21,7 @@ colors = {
 }
 
 
-def main(version, association, cutoff, plot_cutoff=10, load=False):
+def main(version, association, cutoff, plot_cutoff, load):
 
     if not load:
 
@@ -56,10 +56,12 @@ def main(version, association, cutoff, plot_cutoff=10, load=False):
 
         data = []
         nu = np.zeros((n, n))
-        for idx, row in enumerate(arr):
+        ct = 0
+        for row in arr:
+            ct += 1
             for r in range(n):
                 nu[row[r], r] += 1
-            if idx % 10000 == 0:
+            if ct % 100000 == 0:
                 try:
                     g_nu = nx.DiGraph()
                     g_nu.add_nodes_from(range(n))
@@ -70,17 +72,21 @@ def main(version, association, cutoff, plot_cutoff=10, load=False):
                     g_nu = nx.transitive_reduction(g_nu)
                     g_nu_adj = nx.to_numpy_array(g_nu)
                     norm = np.linalg.norm(g_mu_adj - g_nu_adj, ord='fro')
-                    print('sample: {0}, norm: {1}'.format(idx, norm))
-                    data.append((idx, norm))
+                    print('sample: {0}, norm: {1}'.format(ct, norm))
+                    data.append((ct, norm))
                 except nx.NetworkXError:
                     continue
 
         df = pd.DataFrame(data, columns=['sample', 'l1'])
-        df.to_csv('./convergence/convergence_{0}-{1}-{2}.csv'.format(version, association, cutoff), index=False)
+        df.to_csv('./convergence/convergence_{0}-{1}-{2}-{3}.csv'.format(
+            version, association, cutoff, plot_cutoff), index=False
+        )
 
     else:
 
-        df = pd.read_csv('./convergence/convergence_{0}-{1}-{2}.csv'.format(version, association, cutoff))
+        df = pd.read_csv('./convergence/convergence_{0}-{1}-{2}-{3}.csv'.format(
+            version, association, cutoff, plot_cutoff)
+        )
 
     fig = go.Figure()
     fig.add_trace(go.Scatter(
@@ -94,12 +100,12 @@ def main(version, association, cutoff, plot_cutoff=10, load=False):
     ))
     fig.update_layout(
         xaxis_title='Number of Samples',
-        yaxis_title='Frobenius Norm',
+        yaxis_title='Frobenius Norm (Graph Mismatch)',
         margin=dict(b=10, l=10, r=10, t=10),
     )
 
     fig.write_image(
-        './convergence/convergence_{0}-{1}-{2}.pdf'.format(version, association, cutoff),
+        './convergence/convergence_{0}-{1}-{2}-{3}.pdf'.format(version, association, cutoff, plot_cutoff),
         width=1200, height=325, scale=1
     )
 
@@ -107,10 +113,13 @@ def main(version, association, cutoff, plot_cutoff=10, load=False):
 if __name__ == '__main__':
 
     ver_l = ['nonadj']
-    assc_l = ['atp', 'wta']
-    ctff_l = [3]
+    assc_l = ['wta', 'atp']
+    ctff_l = [3, 5]
+    plt_ctff_l = [5, None]
+    ld = False
 
     for ver in ver_l:
         for assc in assc_l:
             for ctff in ctff_l:
-                main(ver, assc, ctff)
+                for plt_ctff in plt_ctff_l:
+                    main(ver, assc, ctff, plt_ctff, ld)

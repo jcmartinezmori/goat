@@ -50,18 +50,31 @@ def load(association, cutoff):
         ranking[grouped_df['player_idx']] = grouped_df['rank']
         rankings.append(ranking)
 
-    ranking_supp = np.array([
-        [idx for idx in range(n) if ranking[idx] is not None] for ranking in rankings], dtype=list
-    )
-    player_supp_sz = np.array(
-        [sum(1 for ranking in rankings if ranking[idx] is not None) for idx in range(n)], dtype=int
-    )
+    # ranking_supp = np.array([
+    #     [idx for idx in range(n) if ranking[idx] is not None] for ranking in rankings], dtype=list
+    # )
+    # player_supp_sz = np.array(
+    #     [sum(1 for ranking in rankings if ranking[idx] is not None) for idx in range(n)], dtype=int
+    # )
 
     # plus one is added later in code
+    # w_mat = np.zeros((n, n))
+    # for k, ranking in enumerate(rankings):
+    #     for i, j in it.permutations(ranking_supp[k], r=2):
+    #         if ranking[i] < ranking[j]:
+    #             w_mat[i, j] += player_supp_sz[i] / player_supp_sz[j]
+
     w_mat = np.zeros((n, n))
     for k, ranking in enumerate(rankings):
-        for i, j in it.permutations(ranking_supp[k], r=2):
-            if ranking[i] < ranking[j]:
-                w_mat[i, j] += player_supp_sz[i] / player_supp_sz[j]
+        for i, j in it.combinations(range(n), r=2):
+            if ranking[i] is not None and ranking[j] is None:
+                w_mat[i, j] += 1
+            elif ranking[i] is None and ranking[j] is not None:
+                w_mat[j, i] += 1
+            elif ranking[i] is not None and ranking[j] is not None:
+                if ranking[i] < ranking[j]:
+                    w_mat[i, j] += 1
+                else:
+                    w_mat[j, i] += 1
 
     return w_mat, player_idx_to_id, player_idx_to_name
