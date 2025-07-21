@@ -1,6 +1,6 @@
 import numpy as np
+# from numba import njit
 np.random.seed(0)
-from numba import njit
 
 
 def main(w_mat, version, no_samples):
@@ -38,34 +38,34 @@ def main(w_mat, version, no_samples):
     return pis
 
 
-# def walk(pi, p, p_sum, w_mat, trans, supp):
-#     if np.random.uniform() <= 0.5:
-#         i_star, j_star = trans[np.random.choice(range(trans.shape[0]), p=p/p_sum)]
-#         pi[i_star], pi[j_star] = pi[j_star], pi[i_star]
-#         for idx, (i, j) in supp[i_star, j_star]:
-#             val = w_mat[pi[j], pi[i]]
-#             p_sum += val - p[idx]
-#             p[idx] = val
-#
-#     return pi, p, p_sum
-
-
 def walk(pi, p, p_sum, w_mat, trans, supp):
     if np.random.uniform() <= 0.5:
         i_star, j_star = trans[np.random.choice(range(trans.shape[0]), p=p/p_sum)]
-        idx_l, i_l, j_l = zip(*((idx, i, j) for idx, (i, j) in supp[i_star, j_star]))
-        pi, p, p_sum = update(i_star, j_star, idx_l, i_l, j_l, pi, p, p_sum, w_mat)
+        pi[i_star], pi[j_star] = pi[j_star], pi[i_star]
+        for idx, (i, j) in supp[i_star, j_star]:
+            val = w_mat[pi[j], pi[i]]
+            p_sum += val - p[idx]
+            p[idx] = val
 
     return pi, p, p_sum
 
 
-@njit
-def update(i_star, j_star, idx_l, i_l, j_l, pi, p, p_sum, w_mat):
-    pi[i_star], pi[j_star] = pi[j_star], pi[i_star]
-    for idx, i, j in zip(idx_l, i_l, j_l):
-        val = w_mat[pi[j], pi[i]]
-        p_sum += val - p[idx]
-        p[idx] = val
-
-    return pi, p, p_sum
+# def walk(pi, p, p_sum, w_mat, trans, supp):
+#     if np.random.uniform() <= 0.5:
+#         i_star, j_star = trans[np.random.choice(range(trans.shape[0]), p=p/p_sum)]
+#         idx_l, i_l, j_l = zip(*((idx, i, j) for idx, (i, j) in supp[i_star, j_star]))
+#         pi, p, p_sum = update(i_star, j_star, idx_l, i_l, j_l, pi, p, p_sum, w_mat)
+#
+#     return pi, p, p_sum
+#
+#
+# @njit
+# def update(i_star, j_star, idx_l, i_l, j_l, pi, p, p_sum, w_mat):
+#     pi[i_star], pi[j_star] = pi[j_star], pi[i_star]
+#     for idx, i, j in zip(idx_l, i_l, j_l):
+#         val = w_mat[pi[j], pi[i]]
+#         p_sum += val - p[idx]
+#         p[idx] = val
+#
+#     return pi, p, p_sum
 
