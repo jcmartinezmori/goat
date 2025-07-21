@@ -35,6 +35,7 @@ def main(w_mat, version, no_samples):
             if ct % 1000 == 0:
                 print('{0:.2f}%'.format(ct / no_samples * 100))
         pi, p, p_sum = walk(pi, p, p_sum, w_mat, trans, supp)
+    
     return pis
 
 
