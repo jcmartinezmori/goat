@@ -16,7 +16,7 @@ def main(w_mat, version, no_samples):
         supp = np.empty(w_mat.shape, dtype=object)
         for i in range(w_mat.shape[0]):
             for j in range(i + 1, w_mat.shape[0]):
-                supp[i, j] = set.union(trans_supp[i],trans_supp[j])
+                supp[i, j] = sorted(set.union(trans_supp[i],trans_supp[j]))
     else:
         raise Exception('Version {0} not supported!'.format(version))
 
@@ -35,7 +35,7 @@ def main(w_mat, version, no_samples):
             if ct % 1000 == 0:
                 print('{0:.2f}%'.format(ct / no_samples * 100))
         pi, p, p_sum = walk(pi, p, p_sum, w_mat, trans, supp)
-    
+
     return pis
 
 
