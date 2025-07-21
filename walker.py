@@ -19,17 +19,18 @@ def main(w_mat, version, no_samples):
     else:
         raise Exception('Version {0} not supported!'.format(version))
 
-    pis = []  # array indices correspond to rank, values correspond to player indices
-
     t, ct = 0, 0
     pi = np.random.permutation(np.array(range(w_mat.shape[0])))
     p = np.array([w_mat[pi[j], pi[i]] for i, j in trans])
     p_sum = p.sum()
+
+    pis = np.empty((no_samples, *pi.shape), dtype=pi.dtype)
+
     while ct < no_samples:
         t += 1
         if t % mod == 0:
+            pis[ct] = pi
             ct += 1
-            pis.append(pi.copy())
             if ct % 1000 == 0:
                 print('{0:.2f}%'.format(ct / no_samples * 100))
         pi, p, p_sum = walk(pi, p, p_sum, w_mat, trans, supp)
