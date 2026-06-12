@@ -23,10 +23,13 @@ def main(version, association, cutoff, no_samples=100000):
 
 if __name__ == '__main__':
 
-    ver_l = ['nonadj']
-    no_sam = 10000000
-    assc_l = ['atp', 'wta']
-    ctff_l = [3, 5, 10, 20]
+    # ver_l = ['nonadj']
+    # no_sam = 1000000
+    # assc_l = ['atp', 'wta']
+    # ctff_l = [3]
+    #
+    # jobs = [(ver, assc, ctff, no_sam) for ver, assc, ctff in it.product(ver_l, assc_l, ctff_l)]
+    # jb.Parallel(n_jobs=1, verbose=11)(jb.delayed(main)(*job) for job in jobs)
 
-    jobs = [(ver, assc, ctff, no_sam) for ver, assc, ctff in it.product(ver_l, assc_l, ctff_l)]
-    jb.Parallel(n_jobs=16, verbose=11)(jb.delayed(main)(*job) for job in jobs)
+    main('nonadj', 'atp', 3, 1000000)
+
